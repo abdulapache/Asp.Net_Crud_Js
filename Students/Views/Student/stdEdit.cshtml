@@ -1,0 +1,80 @@
+﻿@model Students.Context.tbl_Student
+
+@{
+    ViewBag.Title = "stdEdit";
+}
+
+<h2>stdEdit</h2>
+
+
+
+<div class="col">
+    <div class="form-group" hidden>
+        <label>Id</label>
+        <input class="form-control" id="id" placeholder="enter your name" value="@Model.ID" />
+    </div>
+    <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" id="name" placeholder="enter your name" value="@Model.Name" />
+    </div>
+    <div class="form-group">
+        <label>FName</label>
+        <input class="form-control" id="fname" placeholder="enter your name" value="@Model.FName" />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" id="email" placeholder="enter your name" value="@Model.Email" />
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <input class="form-control" id="description" placeholder="enter your name" value="@Model.Description" />
+    </div>
+    <div class="form-group">
+        <label>Phone</label>
+        <input class="form-control" id="mobile" placeholder="enter your name" value="@Model.Mobile" />
+    </div>
+    <div>
+        <button class="btn" onclick="Update()">
+            Submit
+        </button>
+    </div>
+</div>
+
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+<script>
+
+    function Update() {
+        debugger;
+        var data = {};
+        data.id = document.getElementById("id").value;
+        data.name = document.getElementById("name").value;
+        data.fname = document.getElementById("fname").value;
+        data.email = document.getElementById("email").value;
+        data.description = document.getElementById("description").value;
+        data.mobile = document.getElementById("mobile").value;
+
+        $.ajax({
+            url: '/Student/AddStudent',
+            method: 'post',
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function () {
+                window.alert("Data Save Successfully");
+                window.location.href = "/Student"
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+
+</script>

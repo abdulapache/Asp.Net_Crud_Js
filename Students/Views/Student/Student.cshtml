@@ -1,0 +1,207 @@
+﻿@model Students.Context.tbl_Student
+@{
+	ViewBag.Title = "Student";
+}
+
+<h2>Student</h2>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="form-group">
+				<label>Name</label>
+				<input class="form-control" id="name" placeholder="enter your name" />
+			</div>
+			<div class="form-group">
+				<label>FName</label>
+				<input class="form-control" id="fname" placeholder="enter your name" />
+			</div>
+			<div class="form-group">
+				<label>Email</label>
+				<input class="form-control" id="email" placeholder="enter your name" />
+			</div>
+			<div class="form-group">
+				<label>Description</label>
+				<input class="form-control" id="description" placeholder="enter your name" />
+			</div>
+			<div class="form-group">
+				<label>Phone</label>
+				<input class="form-control" id="mobile" placeholder="enter your name" />
+			</div>
+			<div>
+				<button class="btn" onclick="Submit()">
+					Submit
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+-----------------------------------------------------------------------------------------
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" id="email" placeholder="enter your name" />
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input class="form-control" id="password" placeholder="enter your name" />
+            </div>
+            <div>
+                <button class="btn" onclick="Log()">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+------------------------------------------------------------------------------------------
+
+
+<form id="form1" runat="server">
+	<div class="container">
+		<h3 class="text-uppercase text-center">How to retrive data using ajax in asp.net</h3>
+		<table id="student" class="table table-bordered">
+			<thead class="bg-primary text-white">
+				<tr>
+					<td>ID</td>
+					<td>Name</td>
+					<td>FName</td>
+					<td>Email</td>
+					<td>Phone</td>
+					<td>Description</td>
+					<td>Delete</td>
+					<td>Update</td>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</form>
+
+
+
+
+<script type="text/javascript">
+
+    function Log() {
+        debugger;
+        var email = $('#email').value;
+        var pass = $('#password').value;
+        //$.ajax({
+        //    url: '/Login/LoginS',
+        //    method: 'post',
+        //    data: { Email: email, Password: pass },
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    success: function () {
+        //        window.alert("Data Save Successfully");
+        //    },
+        //    error: function (err) {
+        //        console.log(err);
+        //    }
+        //});
+    }
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+
+	function Submit() {
+		debugger;
+		var data = {};
+		data.name = document.getElementById("name").value;
+		data.fname = document.getElementById("fname").value;
+		data.email = document.getElementById("email").value;
+		data.description = document.getElementById("description").value;
+		data.mobile = document.getElementById("mobile").value;
+
+		$.ajax({
+			url: '/Student/AddStudent',
+			method: 'post',
+			data: JSON.stringify(data),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function () {
+				window.alert("Data Save Successfully");
+			},
+			error: function (err) {
+				console.log(err);
+			}
+		});
+	}
+
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		debugger;
+		$.ajax({
+			url: '/Student/studentList',
+			dataType: "json",
+			method: 'post',
+			success: function (res) {
+				debugger;
+				var stdList = $('#student tbody');
+				stdList.empty();
+				$(res).each(function (index, std) {
+					stdList.append('<tr><td>' + std.ID + '</td><td>' + std.Name + '</td><td>' + std.FName + '</td><td>' + std.Email + '</td><td>' + std.Mobile + '</td><td>' + std.Description + '</td><td>' + "<button onclick='DeleteStd(" + std.ID + ")'>Delete</button>" + '</td><td>' + "<a href='/Student/stdEdit?ID= " + std.ID + "'>Edit</a>" + '</td></tr >');
+				});
+			},
+			error: function (err) {
+				alert(err);
+			}
+		});
+	});
+</script>  
+
+
+
+<script>
+	function DeleteStd(x) {
+		debugger;
+		var id = x;
+		   $.ajax({
+			   url: '/Student/stdDel',
+					dataType: "json",
+					type: "POST",
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+			   data: JSON.stringify({ Id: id }),
+					success: function (response) {
+						debugger;
+					   
+						alert("Delete Slider Successfully", response)
+							window.location.reload();
+					},
+					error: function (xhr) {
+						debugger;
+						$("#urlloading").css("display", "none");
+					}
+				});
+	}
+</script>
